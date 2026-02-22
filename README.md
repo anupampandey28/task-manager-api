@@ -1,17 +1,17 @@
-# Habit Tracker
+# To-Do App
 
-A full-stack habit tracking app built with React Native, React and Express.
+A full-stack to-do application built with React Native, React and Express.
 
 ## Tech Stack
 - Mobile: React Native (Expo)
 - Web: React
-- Backend: Express, MongoDB
+- Backend: Node.js + Express
+- Database: PostgreSQL
 
 ## Features
-- User authentication with JWT
-- Add, complete and delete habits
-- Track daily habit completion
-- Web dashboard with weekly summary
+- Add, update and delete todos
+- Mark todos as completed
+- REST API with input validation
 
 ## Project Structure
 - /backend - Express REST API
