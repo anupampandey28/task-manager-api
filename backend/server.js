@@ -1,12 +1,16 @@
 import express from 'express';
-import habitRoutes from './routes/todos.route.js'
+import todoRoutes from './routes/todos.route.js'
+import cors from "cors"
 
 const app = express();
-app.use(express.json());
+app.use(express.json({limit:"16kb"}));
 
 
-app.use('/todos' , habitRoutes)
-  
+app.use(cors({
+    origin:"http://localhost:5173"
+}));
+app.use('/todos' , todoRoutes)
 app.listen(3000 , () =>{
     console.log("Server is running on port 3000");
 })
+                                          
