@@ -1,20 +1,16 @@
 import express from 'express';
-<<<<<<< HEAD
-import habitRoutes from './routes/habits.route.js'
-=======
-import habitRoutes from './routes/todos.route.js'
->>>>>>> c53ba30 (refractor: separate routes , add validation and environment variables)
+import todoRoutes from './routes/todos.route.js'
+import cors from "cors"
 
 const app = express();
-app.use(express.json());
+app.use(express.json({limit:"16kb"}));
 
 
-<<<<<<< HEAD
-app.use('/habits' , habitRoutes)
-=======
-app.use('/todos' , habitRoutes)
->>>>>>> c53ba30 (refractor: separate routes , add validation and environment variables)
-  
+app.use(cors({
+    origin:"http://localhost:5173"
+}));
+app.use('/todos' , todoRoutes)
 app.listen(3000 , () =>{
     console.log("Server is running on port 3000");
 })
+                                          
