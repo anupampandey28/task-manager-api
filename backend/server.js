@@ -7,7 +7,7 @@ app.use(express.json({limit:"16kb"}));
 
 
 app.use(cors({
-    origin:"http://localhost:5173"
+    origin:"https://taskmanager1070.vercel.app"
 }));
 app.use('/task' , taskManagerRouter)
 app.listen(3000 , () =>{
