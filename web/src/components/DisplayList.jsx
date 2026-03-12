@@ -10,8 +10,7 @@ const DisplayList = () => {
   const [isClosing, setIsClosing] = useState(false);
   const API = import.meta.env.VITE_API_URL;
 
-  const APIx = import.meta.env.VITE_API_URL;
-console.log("API URL:", APIx);
+  
 
 
 
