@@ -11,7 +11,7 @@ const DisplayList = () => {
 
   const fetchTodos = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/todos`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/task`);
       const data = await res.json();
       setTodos(data);
     } catch (err) {
@@ -44,7 +44,7 @@ const DisplayList = () => {
 
   const deleteTask = async (id) => {
     try {
-      await fetch(`${import.meta.env.VITE_API_URL}/todos/${id}`, {
+      await fetch(`${import.meta.env.VITE_API_URL}/task/${id}`, {
         method: "DELETE",
       });
       setTodos((prev) => prev.filter((t) => t.id !== id));
@@ -59,7 +59,7 @@ const DisplayList = () => {
 
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/todos/${todo.id}`,
+        `${import.meta.env.VITE_API_URL}/task/${todo.id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -81,7 +81,7 @@ const DisplayList = () => {
 
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/todos/${todo.id}`,
+        `${import.meta.env.VITE_API_URL}/task/${todo.id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -102,9 +102,9 @@ const DisplayList = () => {
   const completedCount = todos.filter((t) => t.completed).length;
 
   return (
-    <div className="min-h-screen w-screen from-gray-50 via-white to-gray-100 py-16 px-8 flex justify-center">
+    <div className="min-h-svh min-w-svw w-screen from-gray-50 via-white to-gray-100 flex flex-1 justify-center px-5 py-5">
 
-      <div className="w-full max-w-6xl bg-white/80 backdrop-blur-xl rounded-3xl border border-gray-200 shadow-[0_40px_100px_rgba(0,0,0,0.08)] overflow-hidden">
+      <div className="w-full min-w-full max-w-6xl bg-white/80 backdrop-blur-xl rounded-3xl border border-gray-200 shadow-[0_40px_100px_rgba(0,0,0,0.08)] overflow-hidden">
 
         {/* Header */}
         <div className="px-12 py-8 flex justify-between items-center border-b border-gray-100">
@@ -278,11 +278,11 @@ const DisplayList = () => {
       {isCreateOpen && (
         <div
           onClick={closeModal}
-          className="fixed inset-0 bg-black/30 backdrop-blur-md flex items-center justify-center z-50"
+          className="fixed w-full inset-0 bg-black/30 backdrop-blur-md flex items-center justify-center z-50"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className={`transition-all duration-200 ${
+            className={`transition-all duration-200 w-1/3  ${
               isClosing
                 ? "scale-95 opacity-0"
                 : "scale-100 opacity-100"

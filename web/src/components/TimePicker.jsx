@@ -1,33 +1,30 @@
 import React from "react";
+
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
 
-const DTPicker = ({ label, date, onChange, minTime }) => {
+const TimePicker = ({ value, onChange, minTime }) => {
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <MobileTimePicker
-        label={label}
-        value={date}
-        onChange={onChange}
+        label="Start Time"
+        value={value}
+        onChange={(newValue) => {
+          if (newValue) onChange(newValue);
+        }}
+        ampm
         format="hh:mm A"
-        ampm={true}
         minTime={minTime}
         slotProps={{
-          popper: {
-            sx: {
-              "& .MuiPaper-root": {
-                backgroundColor: "#fff",
-                color: "black",
-                borderRadius: "20px",
-                padding: "20px",
-              },
-            },
-          },
+          textField: {
+            fullWidth: true
+          }
         }}
       />
     </LocalizationProvider>
   );
 };
 
-export default DTPicker;
+export default TimePicker;

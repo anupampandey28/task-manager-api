@@ -5,14 +5,14 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const { completed } = req.query;
+    const { completed, date } = req.query;
 
     let query = `
-      SELECT * FROM todos
-      WHERE date = CURRENT_DATE
+      SELECT * FROM taskmanager
+      WHERE date = $1
     `;
 
-    let values = [];
+    let values = [date || new Date().toISOString().split("T")[0]];
 
     if (completed !== undefined) {
       if (completed !== "true" && completed !== "false") {
@@ -21,7 +21,7 @@ router.get("/", async (req, res) => {
           .json({ error: "completed must be true or false" });
       }
 
-      query += ` AND completed = $1`;
+      query += ` AND completed = $2`;
       values.push(completed === "true");
     }
 
@@ -38,7 +38,7 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const { name, priority, start_time, end_time } = req.body;
+    const { name, priority, date, start_time, end_time } = req.body;
 
     if (!name || name.trim() === "") {
       return res.status(400).json({ error: "Name is required" });
@@ -46,6 +46,10 @@ router.post("/", async (req, res) => {
 
     if (!priority) {
       return res.status(400).json({ error: "Priority is required" });
+    }
+
+    if (!date) {
+      return res.status(400).json({ error: "Date is required" });
     }
 
     if (!start_time || !end_time) {
@@ -60,27 +64,28 @@ router.post("/", async (req, res) => {
 
     const checkOverlap = await pool.query(
       `
-      SELECT * FROM todos
-      WHERE date = CURRENT_DATE
-      AND start_time < $2
-      AND end_time > $1
+      SELECT id
+      FROM taskmanager
+      WHERE date = $1
+      AND start_time < $3
+      AND end_time > $2
       `,
-      [start_time, end_time]
+      [date, start_time, end_time]
     );
 
     if (checkOverlap.rows.length > 0) {
-      return res
-        .status(400)
-        .json({ error: "Time slot is already booked" });
+      return res.status(400).json({
+        error: "Time slot is already booked on this date"
+      });
     }
 
     const result = await pool.query(
       `
-      INSERT INTO todos (name, priority, start_time, end_time)
-      VALUES ($1, $2, $3, $4)
+      INSERT INTO taskmanager (name, priority, date, start_time, end_time)
+      VALUES ($1, $2, $3, $4, $5)
       RETURNING *
       `,
-      [name.trim(), priority, start_time, end_time]
+      [name.trim(), priority, date, start_time, end_time]
     );
 
     res.status(201).json(result.rows[0]);
@@ -97,7 +102,7 @@ router.put("/:id", async (req, res) => {
 
     const result = await pool.query(
       `
-      UPDATE todos
+      UPDATE taskmanager
       SET name = $1
       WHERE id = $2
       RETURNING *
@@ -116,7 +121,7 @@ router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    await pool.query("DELETE FROM todos WHERE id = $1", [id]);
+    await pool.query("DELETE FROM taskmanager WHERE id = $1", [id]);
 
     res.json({ message: "Todo deleted successfully" });
 
@@ -138,7 +143,7 @@ router.patch("/:id", async (req, res) => {
 
     const result = await pool.query(
       `
-      UPDATE todos
+      UPDATE taskmanager
       SET completed = $1
       WHERE id = $2
       RETURNING *
