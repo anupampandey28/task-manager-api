@@ -51,21 +51,45 @@ identify **upcoming tasks**.
 
 ## Project Structure
 
-    project-root
-    â
-    âââ backend
-    â   âââ db.js
-    â   âââ server.js
-    â   âââ routes
-    â       âââ tasks.js
-    â
-    âââ frontend
-    â   âââ index.html
-    â   âââ style.css
-    â   âââ script.js
-    â
-    âââ package.json
-    âââ README.md
+root
+│
+├── web/        → Frontend (React + Vite)
+└── backend/    → Backend (Node + Express + PostgreSQL)
+
+## Frontend Structure
+
+web
+│
+├── public
+├── src
+│   ├── assets
+│   ├── components
+│   │   ├── DatePicker.jsx
+│   │   ├── DisplayList.jsx
+│   │   ├── TimePicker.jsx
+│   │   └── TodoCard.jsx
+│   │
+│   ├── App.jsx
+│   ├── App.css
+│   ├── index.css
+│   └── main.jsx
+│
+├── index.html
+├── package.json
+├── vite.config.js
+
+
+## Backend Structure
+
+backend
+│
+├── routes
+│   └── taskmanager.router.js
+│
+├── db.js
+├── server.js
+├── package.json
+└── .env
 
 ------------------------------------------------------------------------
 
