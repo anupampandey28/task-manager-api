@@ -8,10 +8,13 @@ const DisplayList = () => {
   const [currentTime, setCurrentTime] = useState(dayjs());
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const API = import.meta.env.VITE_API_URL;
+
+
 
   const fetchTodos = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/tasks`);
+      const res = await fetch(`${API}/tasks`);
       const data = await res.json();
       setTodos(data);
     } catch (err) {
@@ -44,7 +47,7 @@ const DisplayList = () => {
 
   const deleteTask = async (id) => {
     try {
-      await fetch(`${import.meta.env.VITE_API_URL}/tasks/${id}`, {
+      await fetch(`${API}/tasks/${id}`, {
         method: "DELETE",
       });
       setTodos((prev) => prev.filter((t) => t.id !== id));
@@ -59,7 +62,7 @@ const DisplayList = () => {
 
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/tasks/${todo.id}`,
+        `${API}/tasks/${todo.id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -81,7 +84,7 @@ const DisplayList = () => {
 
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/tasks/${todo.id}`,
+        `${API}/tasks/${todo.id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
