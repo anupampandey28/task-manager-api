@@ -48,49 +48,41 @@ identify **upcoming tasks**.
 -   REST API
 
 ------------------------------------------------------------------------
-
 ## Project Structure
 
+```
 root
 │
-├── web/        → Frontend (React + Vite)
-└── backend/    → Backend (Node + Express + PostgreSQL)
-
-## Frontend Structure
-
-web
-│
-├── public
-├── src
-│   ├── assets
-│   ├── components
-│   │   ├── DatePicker.jsx
-│   │   ├── DisplayList.jsx
-│   │   ├── TimePicker.jsx
-│   │   └── TodoCard.jsx
+├── web/                # Frontend (React + Vite)
+│   ├── public/
+│   ├── src/
+│   │   ├── assets/
+│   │   ├── components/
+│   │   │   ├── DatePicker.jsx
+│   │   │   ├── DisplayList.jsx
+│   │   │   ├── TimePicker.jsx
+│   │   │   └── TodoCard.jsx
+│   │   │
+│   │   ├── App.jsx
+│   │   ├── App.css
+│   │   ├── index.css
+│   │   └── main.jsx
 │   │
-│   ├── App.jsx
-│   ├── App.css
-│   ├── index.css
-│   └── main.jsx
+│   ├── index.html
+│   ├── package.json
+│   └── vite.config.js
 │
-├── index.html
-├── package.json
-├── vite.config.js
-
-
-## Backend Structure
-
-backend
+├── backend/            # Backend (Node + Express + PostgreSQL)
+│   ├── routes/
+│   │   └── taskmanager.router.js
+│   │
+│   ├── db.js
+│   ├── server.js
+│   ├── package.json
+│   └── .env
 │
-├── routes
-│   └── taskmanager.router.js
-│
-├── db.js
-├── server.js
-├── package.json
-└── .env
-
+└── README.md
+```
 ------------------------------------------------------------------------
 
 ## API Endpoints
