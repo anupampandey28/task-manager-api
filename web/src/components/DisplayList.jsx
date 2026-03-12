@@ -11,7 +11,7 @@ const DisplayList = () => {
 
   const fetchTodos = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/task`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/tasks`);
       const data = await res.json();
       setTodos(data);
     } catch (err) {
@@ -44,7 +44,7 @@ const DisplayList = () => {
 
   const deleteTask = async (id) => {
     try {
-      await fetch(`${import.meta.env.VITE_API_URL}/task/${id}`, {
+      await fetch(`${import.meta.env.VITE_API_URL}/tasks/${id}`, {
         method: "DELETE",
       });
       setTodos((prev) => prev.filter((t) => t.id !== id));
@@ -59,7 +59,7 @@ const DisplayList = () => {
 
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/task/${todo.id}`,
+        `${import.meta.env.VITE_API_URL}/tasks/${todo.id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -81,7 +81,7 @@ const DisplayList = () => {
 
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/task/${todo.id}`,
+        `${import.meta.env.VITE_API_URL}/tasks/${todo.id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

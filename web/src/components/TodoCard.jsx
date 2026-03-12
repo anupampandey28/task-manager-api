@@ -86,7 +86,7 @@ const TodoCard = ({ onSuccess }) => {
 
     try {
 
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/task`,{
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/tasks`,{
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body:JSON.stringify(newTodo)
