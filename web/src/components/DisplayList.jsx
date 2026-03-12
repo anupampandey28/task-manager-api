@@ -8,8 +8,6 @@ const DisplayList = () => {
   const [currentTime, setCurrentTime] = useState(dayjs());
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
- const API =
-  import.meta.env.VITE_API_URL || "https://taskmanager1070.onrender.com";
 
   
 
@@ -17,7 +15,7 @@ const DisplayList = () => {
 
   const fetchTodos = async () => {
     try {
-      const res = await fetch(`${API}/tasks`);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/tasks`);
       const data = await res.json();
       setTodos(data);
     } catch (err) {
@@ -50,7 +48,7 @@ const DisplayList = () => {
 
   const deleteTask = async (id) => {
     try {
-      await fetch(`${API}/tasks/${id}`, {
+      await fetch(`${import.meta.env.VITE_API_URL}/tasks/${id}`, {
         method: "DELETE",
       });
       setTodos((prev) => prev.filter((t) => t.id !== id));
@@ -65,7 +63,7 @@ const DisplayList = () => {
 
     try {
       const res = await fetch(
-        `${API}/tasks/${todo.id}`,
+        `${import.meta.env.VITE_API_URL}/tasks/${todo.id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -87,7 +85,7 @@ const DisplayList = () => {
 
     try {
       const res = await fetch(
-        `${API}/tasks/${todo.id}`,
+        `${import.meta.env.VITE_API_URL}/tasks/${todo.id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -231,7 +229,7 @@ const DisplayList = () => {
                             : "text-gray-800"
                         }`}
                       >
-                        {todo.name}
+                        {todo.task}
                       </td>
 
                       <td className="px-12 py-5">
