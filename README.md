@@ -173,7 +173,3 @@ Anupam Pandey\
 https://github.com/anupampandey28
 
 ------------------------------------------------------------------------
-
-## License
-
-MIT License
