@@ -3,6 +3,7 @@ import pool from "../db.js";
 
 const router = express.Router();
 
+/* GET TASKS */
 router.get("/", async (req, res) => {
   try {
     const { completed, date } = req.query;
@@ -16,9 +17,9 @@ router.get("/", async (req, res) => {
 
     if (completed !== undefined) {
       if (completed !== "true" && completed !== "false") {
-        return res
-          .status(400)
-          .json({ error: "completed must be true or false" });
+        return res.status(400).json({
+          error: "completed must be true or false"
+        });
       }
 
       query += ` AND completed = $2`;
@@ -32,15 +33,18 @@ router.get("/", async (req, res) => {
     res.status(200).json(result.rows);
 
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "server error" });
   }
 });
 
+
+/* CREATE TASK */
 router.post("/", async (req, res) => {
   try {
     const { name, priority, date, start_time, end_time } = req.body;
 
-    if (!name || name.trim() === "") {
+    if (!name?.trim()) {
       return res.status(400).json({ error: "Name is required" });
     }
 
@@ -58,10 +62,11 @@ router.post("/", async (req, res) => {
 
     if (end_time <= start_time) {
       return res.status(400).json({
-        error: "End time must be after start time",
+        error: "End time must be after start time"
       });
     }
 
+    /* CHECK TIME OVERLAP */
     const checkOverlap = await pool.query(
       `
       SELECT id
@@ -75,13 +80,13 @@ router.post("/", async (req, res) => {
 
     if (checkOverlap.rows.length > 0) {
       return res.status(400).json({
-        error: "Time slot is already booked on this date"
+        error: "Time slot already booked"
       });
     }
 
     const result = await pool.query(
       `
-      INSERT INTO taskmanager (name, priority, date, start_time, end_time)
+      INSERT INTO taskmanager (task, priority, date, start_time, end_time)
       VALUES ($1, $2, $3, $4, $5)
       RETURNING *
       `,
@@ -91,10 +96,13 @@ router.post("/", async (req, res) => {
     res.status(201).json(result.rows[0]);
 
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "server error" });
   }
 });
 
+
+/* RENAME TASK */
 router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -103,7 +111,7 @@ router.put("/:id", async (req, res) => {
     const result = await pool.query(
       `
       UPDATE taskmanager
-      SET name = $1
+      SET task = $1
       WHERE id = $2
       RETURNING *
       `,
@@ -113,32 +121,41 @@ router.put("/:id", async (req, res) => {
     res.json(result.rows[0]);
 
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: error.message });
   }
 });
 
+
+/* DELETE TASK */
 router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    await pool.query("DELETE FROM taskmanager WHERE id = $1", [id]);
+    await pool.query(
+      `DELETE FROM taskmanager WHERE id = $1`,
+      [id]
+    );
 
     res.json({ message: "Todo deleted successfully" });
 
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: error.message });
   }
 });
 
+
+/* COMPLETE TASK */
 router.patch("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { completed } = req.body;
 
     if (typeof completed !== "boolean") {
-      return res
-        .status(400)
-        .json({ error: "completed must be true or false" });
+      return res.status(400).json({
+        error: "completed must be true or false"
+      });
     }
 
     const result = await pool.query(
@@ -158,6 +175,7 @@ router.patch("/:id", async (req, res) => {
     res.json(result.rows[0]);
 
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "server error" });
   }
 });
